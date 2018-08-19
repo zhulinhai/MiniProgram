@@ -11,7 +11,7 @@ function base64Encode (str) {
   var newstr = buf.toString('base64')
   newstr = newstr.replace(/\+/g, '*')
   newstr = newstr.replace(/\//g, '-')
-  newstr = newstr.replace(/=/g, '_')
+  newstr = newstr.replace(/\=/g, '_')
   return newstr
 }
 
@@ -59,8 +59,8 @@ function getSig (userid) {
  */
 function base64Decode (str) {
   str = str.replace(/\*/g, '+')
-  str = str.replace(/-/g, '/')
-  str = str.replace(/_/g, '=')
+  str = str.replace(/\-/g, '/')
+  str = str.replace(/\_/g, '=')
   var buf = new Buffer(str, 'base64')
   return buf
 }
@@ -87,11 +87,11 @@ function verifySig (sdkAppID, accountType, userID, userSig) {
     return { code: 1, message: 'userSig 格式不正确' }
   }
 
-  if (sdkAppID !== orderString['TLS.sdk_appid']) {
+  if (sdkAppID != orderString['TLS.sdk_appid']) {
     return { code: 2, message: 'sdkAppID 和userSig中的信息不一致' }
   }
 
-  if (userID !== orderString['TLS.identifier']) {
+  if (userID != orderString['TLS.identifier']) {
     return { code: 2, message: 'userID 和userSig中的信息不一致' }
   }
 

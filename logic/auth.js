@@ -110,7 +110,7 @@ async function authorizeMiddleware (ctx, next) {
       ctx.state.token = makeToken(sdkAppID, accountType, APIKey, userID)
       setLoginToken(sdkAppID, accountType, userID, ctx.state.token)
     } else {
-      ctx.state.result = result.code
+      ctx.state.result = result
     }
   } else {
     ctx.state.result = { code: 4, message: '请求参数不全，请检查sdkAppID，accountType，userID，userSig参数是否都存在' }

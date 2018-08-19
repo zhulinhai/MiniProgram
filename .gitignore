@@ -8,3 +8,4 @@ doc
 *.iws
 nbproject
 config.js
+logs

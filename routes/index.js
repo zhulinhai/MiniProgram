@@ -226,11 +226,8 @@ router.get(utilsPrefix + '/get_test_pushurl', utils.get_test_pushurl)
 router.get(utilsPrefix + '/get_test_rtmpaccurl', utils.get_test_rtmpaccurl)
 
 /**
- * 
+ *
  */
 router.get(utilsPrefix + '/get_login_info', utils.get_login_info)
-
-
-
 
 module.exports = router

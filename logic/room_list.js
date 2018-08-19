@@ -42,7 +42,7 @@ RoomMgr.prototype.isRoomExist = function (roomID) {
  * 是否是房间创建者
  */
 RoomMgr.prototype.isRoomCreator = function (roomID, userID) {
-  if (this.rooms[roomID] && this.rooms[roomID].roomCreator == userID) {
+  if (this.rooms[roomID] && this.rooms[roomID].roomCreator === userID) {
     return true
   }
   return false
@@ -105,7 +105,7 @@ RoomMgr.prototype.addPusher = function (roomID, userID, userName, userAvatar, pu
   var IDs = liveutil.getStreamIdFromPushUrl(pushURL)
   var mixedURL = liveutil.genMixedPlayUrl(IDs.subID, 'flv')
   if (room) {
-    if (room.actived == false) {
+    if (room.actived === false) {
       room.actived = true
       room.roomCreator = userID
       room.mixedPlayURL = mixedURL
@@ -139,11 +139,11 @@ RoomMgr.prototype.addPusher = function (roomID, userID, userName, userAvatar, pu
  * 删除推流者 - 退房
  */
 RoomMgr.prototype.delPusher = function (roomID, userID) {
-  var creatorCanDestroyRoom = true;
-  if (this.name == 'double_room') {
-    creatorCanDestroyRoom = config.double_room.creatorCanDestroyRoom;
-  } else if (this.name == 'multi_room') {
-    creatorCanDestroyRoom = config.multi_room.creatorCanDestroyRoom;
+  var creatorCanDestroyRoom = true
+  if (this.name === 'double_room') {
+    creatorCanDestroyRoom = config.double_room.creatorCanDestroyRoom
+  } else if (this.name === 'multi_room') {
+    creatorCanDestroyRoom = config.multi_room.creatorCanDestroyRoom
   }
   if (this.isRoomCreator(roomID, userID) && creatorCanDestroyRoom) {
     this.delRoom(roomID)
@@ -155,11 +155,11 @@ RoomMgr.prototype.delPusher = function (roomID, userID) {
       if (room) {
         delete room.pushers[userID]
         if (!creatorCanDestroyRoom) {
-          //房间没有人推流时，删除该房间
+          // 房间没有人推流时，删除该房间
           if (room.pushers && Object.getOwnPropertyNames(room.pushers).length <= 0) {
             this.delRoom(roomID)
             immgr.destroyGroup(roomID)
-            return;
+            return
           }
         }
         // notify
@@ -308,7 +308,7 @@ RoomMgr.prototype.onTimerCheckHeartBeat = function (timeout) {
             }, function (result) {
               log.info('查询流状态断流，删除用户')
               // 流状态为非正在推流的情况下，不做任何操作
-              if (result.ret == 1) {
+              if (result.ret === 1) {
                 that.delPusher(roomID, userID)
               }
             })
@@ -336,7 +336,7 @@ RoomMgr.prototype.getRoomList = function (index, count) {
   var cursor = 0
   var roomcnt = 0
   for (var i in this.rooms) {
-    if (this.rooms[i].actived == true) {
+    if (this.rooms[i].actived === true) {
       if (cursor >= index) {
         var room = {
           roomID: this.rooms[i].roomID,
@@ -403,13 +403,13 @@ function getStreamStatus (streamid, success, fail) {
 
   request.get(url, function (error, rsp, body) {
     log.info('查询流结果：' + body)
-    if (!error && rsp.statusCode == 200) {
+    if (!error && rsp.statusCode === 200) {
       try {
         body = JSON.parse(body)
       } catch (e) {
         body = { ret: 1000 }
       }
-      if (!body.ret && body.output[0] && body.output[0].status == 1) {
+      if (!body.ret && body.output[0] && body.output[0].status === 1) {
         success && success({ ret: 0 })
       } else {
         fail && fail({ ret: 1 })
